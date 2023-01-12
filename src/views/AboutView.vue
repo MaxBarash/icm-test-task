@@ -24,24 +24,16 @@ export default {
                children: [
                   { field: 'col1', valueGetter: getRandomImagePath, maxWidth: 120, },
                   { field: 'col2', valueGetter: () => getRandomSrting(10), maxWidth: 120, },
-                  {
-                     field: 'col3', sortable: true,
-                     valueGetter: () => `${getRandomFloat(2)}кг`, maxWidth: 90,
-                  },
+                  { field: 'col3', sortable: true, valueGetter: () => `${getRandomFloat(2)}кг`, maxWidth: 90, },
                ],
             },
             {
                headerName: 'GROUP2',
                children: [
 
-                  {
-                     field: 'col4', sortable: true,
-                     maxWidth: 65, valueGetter: () => getRandomInteger() + getRandomInteger(),
-                  },
+                  { field: 'col4', sortable: true, maxWidth: 65, valueGetter: () => getRandomInteger() + getRandomInteger(),},
                   { field: 'col5', valueGetter: () => getRandomSrting(5), maxWidth: 100, },
-                  {
-                     field: 'col6',
-                     valueGetter: () => getRandomArrayItem(['str1', 'str2', 'str3', 'str4', 'str5']), maxWidth: 90,
+                  { field: 'col6', valueGetter: () => getRandomArrayItem(['str1', 'str2', 'str3', 'str4', 'str5']), maxWidth: 90,
                      sortable: true,
                      filter: true,
                   },
