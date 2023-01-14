@@ -1,7 +1,12 @@
 <template>
-   <div class="about">
-      <ag-grid-vue style="width: 100%; height: 600px; text-align: center" class="ag-theme-alpine"
-         :columnDefs="columnDefs" :rowData="rowData" :defaultColDef="defaultColDef.def">
+   <div class="about2">
+      <ag-grid-vue style="width: 1200px; height: 600px;" class="ag-theme-alpine-dark" 
+         :columnDefs="columnDefs"
+         :rowData="rowData"
+         @grid-ready="onGridReady"
+         :defaultColDef="defaultColDef"
+         :autoGroupColumnDef="autoGroupColumnDef" 
+         >
       </ag-grid-vue>
    </div>
 </template>
@@ -16,52 +21,59 @@ export default {
    components: {
       AgGridVue,
    },
-   data: () => {
+   setup(props) {
       return ({
          columnDefs: [
             {
                headerName: 'Group1',
                children: [
-                  { field: 'col1', valueGetter: getRandomImagePath, maxWidth: 120, },
-                  { field: 'col2', valueGetter: () => getRandomSrting(10), maxWidth: 120, },
-                  { field: 'col3', sortable: true, valueGetter: () => `${getRandomFloat(2)}кг`, maxWidth: 90, },
+                  { headerName: 'Col1', field: 'val6', },
+                  { headerName: 'Col2', field: 'val1', },
+                  { headerName: 'Col3', field: 'val2', filter: 'agNumberColumnFilter', rowGroup: true, aggFunc: 'sum', valueGetter: params => params.data.val2 + ' кг', },
                ],
             },
             {
                headerName: 'GROUP2',
                children: [
-
-                  { field: 'col4', sortable: true, maxWidth: 65, valueGetter: () => getRandomInteger() + getRandomInteger(),},
-                  { field: 'col5', valueGetter: () => getRandomSrting(5), maxWidth: 100, },
-                  { field: 'col6', valueGetter: () => getRandomArrayItem(['str1', 'str2', 'str3', 'str4', 'str5']), maxWidth: 90,
-                     sortable: true,
-                     filter: true,
-                  },
+                  { headerName: 'Col4', aggFunc: 'avg', filter: 'agNumberColumnFilter', rowGroup: true, valueGetter: params => params.data.val4 + params.data.val5, },
+                  { headerName: 'Col5', field: 'val7', filter: false, cellStyle: { fontWeight: 'bold', textDecoration: 'underline', }, },
+                  { headerName: 'Col6', field: 'val8', floatingFilter: true, filter: 'agTextColumnFilter', },
                ],
+            },
+            {
+               children: [
+                  { field: 'total', rowGroup: true,},
+               ]
             },
          ],
 
-         gridApi: null,
-         columnApi: null,
          defaultColDef: {
             flex: 1,
-            maxWidth: 100,
             sortable: true,
-            filter: true,
-
+            filter: false,
+            floatingFilter: false,
+            resizable: true,
+            editable: true,
+            rowAnimation: true,
          },
          rowData: null,
       });
+
    },
    created() {
+      this.autoGroupColumnDef = {
+         field: 'val2',
+         aggFunc: 'sum',
+      };
       this.rowData = createRowData();
    },
    methods: {
       onGridReady(params) {
          this.gridApi = params.api;
          this.gridColumnApi = params.columnApi;
-      },
-   },
+         const updateData = (data) => params.api.setRowData(data);
+      }
+   }
 };
 
 const abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
@@ -83,16 +95,21 @@ function getRandomInteger() {
    return (Math.floor(Math.random() * 100) + 1);
 }
 
+function getSumValue(a, b) {
+   return a + b;
+}
+
 function getRandomImagePath() {
-   return `${getRandomSrting(3)}/${getRandomSrting(3)}.${getRandomArrayItem(['jpeg', 'png', 'svg'])}`
+   return `${getRandomSrting(3)}/${getRandomSrting(3)}.${getRandomArrayItem(['jpeg', 'png', 'svg'])}`;
 }
 
 function getRandomArrayItem(arr) {
    return arr[(Math.floor(Math.random() * arr.length))];
 }
 
+const rowData = [];
+
 window.createRowData = function createRowData() {
-   var rowData = [];
    var arr = ['str1', 'str2', 'str3', 'str4', 'str5'];
    for (var i = 0; i < 100; i++) {
       rowData.push({
@@ -111,12 +128,10 @@ window.createRowData = function createRowData() {
 
 </script>
 <style>
-@media (min-width: 1024px) {
-   .about {
-      min-width: 100%;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-   }
+.about2 {
+   width: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 </style>
