@@ -42,7 +42,10 @@ export default {
             },
             {
                children: [
-                  { field: 'total', rowGroup: true,},
+                  { field: 'total', rowGroup: true,
+                     valueGetter: params =>
+                        params.data.val2 + params.data.val3 + params.data.val4 + params.data.val5,
+},
                ]
             },
          ],
