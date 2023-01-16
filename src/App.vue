@@ -5,16 +5,15 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
    <header>
       <nav>
-         <RouterLink class="task" to="/">Task</RouterLink>
-         <RouterLink class="about" to="/about">FirstTable</RouterLink>
+         <RouterLink class="rout" to="/">Task</RouterLink>
+         <RouterLink class="rout" to="/table">Table</RouterLink>
       </nav>
       <RouterView />
    </header>
 </template>
 
 <style scoped>
-.task,
-.about {
+.rout {
    margin: 10px;
 }
 
